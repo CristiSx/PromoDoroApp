@@ -1,15 +1,13 @@
-import { Button } from "../UI/button"
 
+import { NavBar } from "../UI/NavBar";
+import Bottom from "../UI/bottom";
 const Home = () => {
 
-    const handleClick = () => {
-        console.log("send to login");
-        window.location.href = "/login"; // Redirect to login page
-    }
   return (
     <>
-    <div className="flex flex-col items-center bg-[#FFF0F5] "> {/* Background color changed to light pink */ }
 
+    <div className="flex flex-col items-center bg-[#FFF0F5] "> {/* Background color changed to light pink */ }
+    <NavBar /> {/* Navigation bar at the top */ }
       
         <div className=" mt-[100px] bg-white p-8 rounded-lg shadow-md w-[600px] text-center"> {/* Card style for the container */ }
             <h1 className="text-2xl font-bold mb-4"> Welcome to Pomodoro App</h1>
@@ -20,6 +18,7 @@ const Home = () => {
 
         
         <div className="mt-[500px]"></div> {/* Spacer to push the button down */ }
+        <Bottom /> {/* Footer component */ }
     </div>
     </>
   )
