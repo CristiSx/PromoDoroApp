@@ -3,7 +3,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 import { NavBar } from "../UI/NavBar";
-import Bottom from "../UI/Bottom";
+import Bottom from "../UI/bottom";
 const Home = () => {
 
   return (
