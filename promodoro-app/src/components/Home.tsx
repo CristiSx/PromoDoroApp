@@ -17,7 +17,7 @@ const Home = () => {
             <p className="text-gray-600 mb-6">A simple and effective way to manage your time.</p>
         </div>
 
-        <div className="mt-[100px] bg-white p-8 rounded-lg shadow-md w-[400px] h-[400px] text-center" >
+        <div className="relative mt-[100px] bg-white p-8 rounded-lg shadow-md w-[400px] h-[400px] text-center" >
           <h2 className="text-2xl text-[#1F2A38] font-bold mb-4">Pomodoro Timer</h2>
               <CircularProgressbar value={66} 
                 styles={buildStyles({
@@ -25,7 +25,9 @@ const Home = () => {
                   trailColor: '#fff0f3', // Lighter shade for the trail
                 })}
               />
-          <Timer time={425}/>
+           <div className="absolute inset-0 flex items-center justify-center">
+            <Timer time={425} />
+           </div>
         </div>
         
         <div className="mt-[500px]"></div> {/* Spacer to push the button down */ }
