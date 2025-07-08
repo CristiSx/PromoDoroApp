@@ -7,9 +7,10 @@ const Home = () => {
     }
   return (
     <>
+    <div>caca2</div>
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
         <Button className="mb-4" onClick={handleClick}>
-          login
+          caca
         </Button>
     </div>
     </>
