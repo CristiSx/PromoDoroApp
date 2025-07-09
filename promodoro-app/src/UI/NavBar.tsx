@@ -17,6 +17,8 @@ export const NavBar = () => {
             <Button className='text-gray-700 hover:text-[#ffb6c1] cursor-pointer' onClick={() => window.location.href='/Friends'}>Friends</Button>
             <Button className='text-gray-700 hover:text-[#ffb6c1] cursor-pointer' onClick={() => window.location.href='/Statistics'}>Statistics</Button>
             <Button className='text-gray-700 hover:text-[#ffb6c1] cursor-pointer' onClick={() => window.location.href='/Login'}>Login</Button>
+         
+ 
        </nav>
 
     </div>
