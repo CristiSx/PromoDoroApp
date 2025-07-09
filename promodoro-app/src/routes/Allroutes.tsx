@@ -5,12 +5,14 @@ import Register from "../components/Register";
 import Statistics from "../components/Statistics";
 import Friends from "../components/Friends";
 import Settings from "../components/Settings";
+import ForogotPassword from "../components/ForogotPassword";
 export const Allroutes = createBrowserRouter([
     {path: "/", element: <Home/>},
     {path: "/login", element: <Login/>},
     {path: "/register", element: <Register/>},
     {path: "/Statistics", element: <Statistics/>},
     {path: "/Friends", element: <Friends/>},
-    {path: "/Settings", element: <Settings/>}
+    {path: "/Settings", element: <Settings/>},
+    {path: "/ForgotPassword", element: <ForogotPassword/>}
 
 ]);

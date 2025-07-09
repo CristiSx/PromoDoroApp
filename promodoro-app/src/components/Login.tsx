@@ -16,7 +16,7 @@ const Login = () => {
             <div className='flex flex-col items-center mb-6'>
               <img src={logo} alt="Logo" className="h-12 w-12 mb-2" />
               <h1 className="text-2xl font-bold text-[#1F2A38]">Welcome Back</h1>
-              <p className='mt-4'>Sign in to your FocusBloom account</p>
+              <p className='mt-4'>Sign in to your MuraBloom account</p>
             </div>
             <form>
               <div className="flex flex-col justify-right mb-4">
@@ -42,7 +42,7 @@ const Login = () => {
                     className="mr-2" />
                   <label htmlFor="rememberMe" className="ml-2 text-sm text-gray-600">Remember me</label>
                 </div>
-                <a href="#" className="text-sm text-[#ffb6c1] hover:underline">Forgot password?</a>
+                <a href="/ForgotPassword" className="text-sm text-[#ffb6c1] hover:underline">Forgot password?</a>
               </div>
               <div>
                 <Button className="w-full bg-[#ffb6c1] cursor-pointer text-white py-4 mt-2 rounded-lg hover:bg-[#ff9eb6] transition-colors">
