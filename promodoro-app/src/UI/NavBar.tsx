@@ -14,9 +14,9 @@ export const NavBar = () => {
         
         <nav className='flex space-x-8 mr-[200px]'>
             <Button className='text-gray-700 hover:text-[#ffb6c1]' onClick={() => window.location.href='/'}>Home</Button>
-            <Button className='text-gray-700 hover:text-[#ffb6c1]' onClick={() => window.location.href='/Friends'}>Friends</Button>
-            <Button className='text-gray-700 hover:text-[#ffb6c1]' onClick={() => window.location.href='/Statistics'}>Statistics</Button>
-            <Button className='text-gray-700 hover:text-[#ffb6c1]' onClick={() => window.location.href='/Login'}>Login</Button>
+            <Button className='text-gray-700 hover:text-[#ff69b4]' onClick={() => window.location.href='/Friends'}>Friends</Button>
+            <Button className='text-gray-700 hover:text-[#ff69b4]' onClick={() => window.location.href='/Statistics'}>Statistics</Button>
+            <Button className='text-gray-700 hover:text-[#ff69b4]' onClick={() => window.location.href='/Login'}>Login</Button>
        </nav>
 
     </div>
