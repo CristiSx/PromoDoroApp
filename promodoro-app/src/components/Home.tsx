@@ -15,7 +15,7 @@ const Home = () => {
     <NavBar /> {/* Navigation bar at the top */ }
       
         <div className=" mt-[100px] bg-white p-8 rounded-[2vw] shadow-lg w-[600px] text-center border-[.1vw] border-[#ffb6c1]"> {/* Card style for the container */ }
-            <h1 className="text-2xl text-[#1F2A38] font-bold mb-4"> Welcome to Pomodoro App</h1>
+            <h1 className="text-2xl text-[#1F2A38] font-bold mb-4"> Welcome to MuraBloom</h1>
             <p className="text-gray-600 mb-6">A simple and effective way to manage your time.</p>
         </div>
 
