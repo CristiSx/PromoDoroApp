@@ -3,7 +3,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 import { NavBar } from "../UI/NavBar";
-import Bottom from "../UI/bottom";
+import Bottom from "../UI/Bottom";
 const Home = () => {
 
   return (
@@ -18,13 +18,17 @@ const Home = () => {
         </div>
 
         <div className="relative mt-[100px] bg-white p-8 rounded-lg shadow-md w-[400px] h-[400px] text-center" >
+          
           <h2 className="text-2xl text-[#1F2A38] font-bold mb-4">Pomodoro Timer</h2>
+             
               <CircularProgressbar value={66} 
+              
                 styles={buildStyles({
                   pathColor: '#ffb6c1', // Light pink color for the progress path
                   trailColor: '#fff0f3', // Lighter shade for the trail
                 })}
               />
+             
            <div className="absolute inset-0 flex items-center justify-center">
             <Timer time={425} />
            </div>
