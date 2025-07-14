@@ -3,9 +3,44 @@ import { NavBar } from '../UI/NavBar'
 import Bottom from '../UI/Bottom'
 import { Button } from '../UI/button'
 import { FaGoogle, FaGithub} from "react-icons/fa";
+import { useState } from 'react'
 const Login = () => {
-  return (
-    <>
+  type FormData = {
+    email: string;
+    password: string; 
+  }
+      const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // prevent page reload
+    const response = await fetch("http://localhost:5005/v1/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+    const result = await response.json();
+
+    if (response.ok) {
+      alert("Login successful!");
+      // Optional: Redirect or clear form
+    } else {
+      alert(result.message || "Login failed");
+      console.error("Login error:", result);
+      console.log(formData.email, formData.password);
+    }
+  }
+
+
+    return (
+  
+      <>
       <div className="flex flex-col items-center bg-[#FFF0F5]">
         <NavBar />
         <div className="mt-[100px]"/>
@@ -18,12 +53,15 @@ const Login = () => {
               <h1 className="text-2xl font-bold text-[#1F2A38]">Welcome Back</h1>
               <p className='mt-4'>Sign in to your MuraBloom account</p>
             </div>
-            <form>
+            <form onSubmit={handleSubmit} className="flex flex-col">
               <div className="flex flex-col justify-right mb-4">
                 <label className="block text-m font-mediumtext-gray-700 text-left ml-1">Email Address</label>
                 <input
                   
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Email"
                   className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
               </div>
@@ -31,6 +69,9 @@ const Login = () => {
                 <label className="block text-m font-medium text-gray-700 text-left ml-1">Password</label>
                 <input
                   type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   placeholder="Password"
                   className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
               </div>
@@ -45,7 +86,7 @@ const Login = () => {
                 <a href="/ForgotPassword" className="text-sm text-[#ffb6c1] hover:underline">Forgot password?</a>
               </div>
               <div>
-                <Button className="w-full bg-[#ffb6c1] cursor-pointer text-white py-4 mt-2 rounded-lg hover:bg-[#ff9eb6] transition-colors">
+                <Button type="submit" className="w-full bg-[#ffb6c1] cursor-pointer text-white py-4 mt-2 rounded-lg hover:bg-[#ff9eb6] transition-colors">
                   Login
                 </Button>
               </div>
