@@ -1,6 +1,6 @@
     import Auth from "./auth.js";
     import { Verify, VerifyRole } from "../middleware/verify.js";
-    import { getAllUsers } from "../config/controllers/auth.js";
+    import Admin from "./admin.js";
     const Router = (server) => {
     // home route with the get method and a handler
     server.get("/v1", (req, res) => {
@@ -33,7 +33,7 @@
             message: "Welcome to the Admin portal!",
         });
     });
-    server.get("/v1/allUsers", getAllUsers);
+    server.use("/v1/admin", Admin);
     server.use('/v1/auth', Auth);
 
     };

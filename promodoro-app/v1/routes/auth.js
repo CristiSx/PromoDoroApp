@@ -4,7 +4,7 @@ import { Register } from "../config/controllers/auth.js";
 import Validate from "../middleware/valitate.js";
 import { check } from "express-validator";
 import { Login } from "../config/controllers/auth.js";
-import { getAllUsers } from "../config/controllers/auth.js";
+
 import { Verify } from "../middleware/verify.js";
 import { Logout } from "../config/controllers/auth.js";
 const router = express.Router();
