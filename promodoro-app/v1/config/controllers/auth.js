@@ -101,21 +101,7 @@ export async function Register(req, res) {
     }
     res.end();
 }
-export const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find().select("-password"); // exclude password
-        res.status(200).json({
-            status: "success",
-            data: users,
-        });
-    } catch (err) {
-        console.error("Error fetching users:", err);
-        res.status(500).json({
-            status: "error",
-            message: "Failed to fetch users",
-        });
-    }
-};
+
 export async function Logout(req, res) {
   try {
     const authHeader = req.headers['cookie']; // get the session cookie from request header
