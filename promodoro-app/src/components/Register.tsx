@@ -3,7 +3,62 @@ import Bottom from "../UI/Bottom"
 import logo from '../assets/logo.png'
 import { Button } from "../UI/button"
 import { FaGoogle, FaGithub } from "react-icons/fa"
+import {useState} from 'react'
+
 const Register = () => {
+  type FormData = {
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+  const [formData, setFormData] = useState<FormData>({
+    first_name: "",
+    last_name: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({...formData, [e.target.name]: e.target.value });
+  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault(); // prevent page reload
+
+  // Optional: simple validation
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5005/v1/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert("Registration successful!");
+      // Optional: Redirect or clear form
+    } else {
+      alert(result.message || "Registration failed");
+      console.error("Registration error:", result);
+     console.log(formData.first_name, formData.last_name, formData.username, formData.email, formData.password, formData.confirmPassword);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Something went wrong while registering");
+  }
+};
+
   return (
     <>
     <div className="flex flex-col items-center bg-[#FFF0F5]">
@@ -19,31 +74,50 @@ const Register = () => {
               <p className='mt-4'>Create your account to start boosting productivity</p>
             </div>
             
-            <form>
+            <form onSubmit={handleSubmit} className="flex flex-col">
               <div className="flex flex-col justify-between mb-4">
                 <div className="flex flex-col justify-right mb-4">
                   <label className="block text-m font-medium text-gray-700 text-left ml-1">First Name</label>
                    <input
                     type="text"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
                     placeholder="Frist Name"
                     className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
+                    
                  </div>
                 
                 <div className="flex flex-col justify-right">
                   <label className="block text-m font-medium text-gray-700 text-left ml-1   ">Last Name</label>
                     <input 
                     type="text"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
                     placeholder="Last Name"
                     className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
                 </div>
               </div>
-
+              <div className="flex flex-col justify-right mb-4">
+                <label className="block text-m font-medium text-gray-700 text-left ml-1">Username</label>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
+              </div>
               <div className="flex flex-col justify-right mb-4">
                 <label className="block text-m font-mediumtext-gray-700 text-left ml-1">Email Address</label>
                 <input
                   
                   type="email"
                   placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
               </div>
               
@@ -52,6 +126,9 @@ const Register = () => {
                 <input
                   type="password"
                   placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
               </div>
 
@@ -59,19 +136,19 @@ const Register = () => {
                 <label className="block text-m font-medium text-gray-700 text-left ml-1">Confirm Password</label>
                 <input
                   type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                   placeholder="Confirm Password"
                   className="w-full p-2 border border-gray-300 rounded-lg sfocus:bg-pink-100 focus:border-[#FFF0F5] focus:outline-none focus:shadow-md focus:shadow-pink-300 transition-all duration-200" />
               </div>
     
               <div>
-                <Button className="w-full bg-[#ffb6c1] cursor-pointer text-white py-4 mt-2 rounded-lg hover:bg-[#ff9eb6] transition-colors">
-                  Login
+                <Button type="submit" className="w-full bg-[#ffb6c1] cursor-pointer text-white py-4 mt-2 rounded-lg hover:bg-[#ff9eb6] transition-colors">
+                  Register
                 </Button>
               </div>
-             
-              <div className="mt-4 text-sm text-gray-600">
-                Don't have an account? <a href="/Register" className="text-[#ffb6c1] hover:underline">Sign up</a>
-              </div>
+            
               
               <div className="mt-6 flex items-center justify-center">
                 <div className="w-full border-t border-gray-300"></div>
