@@ -4,9 +4,17 @@ import PauseButton from "./PauseButton";
 import StopButton from "./StopButton";
 
 interface State {
-    time: number;
-    seconds: number;
-    minutes: number;
+  time: number;
+  seconds: number;
+  minutes: number;
+}
+
+type TimerMode = "work" | "break";
+
+export interface SessionData {
+  type: TimerMode;
+  durationMinutes: number;
+  finishedAt: Date;
 }
 
 type TimerMode = "work" | "break";
