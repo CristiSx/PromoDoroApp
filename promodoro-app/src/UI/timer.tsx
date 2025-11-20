@@ -17,126 +17,97 @@ export interface SessionData {
   finishedAt: Date;
 }
 
+type TimerMode = "work" | "break";
+
 interface TimerProps {
-  onProgress: (percentage: number) => void;
-  onSessionComplete: (session: SessionData) => void;
-  initialMinutes: number | null;
-  shortBreakMinutes: number | null;
+    onProgress: (percentage: number) => void;
+    initialMinutes: number | null;
+    shortBreakMinutes: number | null;
 }
 
-const Timer = ({
-  onProgress,
-  onSessionComplete,
-  initialMinutes,
-  shortBreakMinutes,
-}: TimerProps) => {
-  const [totalTime, setTotalTime] = React.useState<number>(0);
-  const [state, setState] = React.useState<State | null>(null);
-  const [isPaused, setIsPaused] = React.useState<boolean>(false);
-  const [mode, setMode] = React.useState<TimerMode>("work");
+const Timer = ({ onProgress, initialMinutes, shortBreakMinutes }: TimerProps) => {
+    const [totalTime, setTotalTime] = React.useState<number>(0);
+    const [state, setState] = React.useState<State | null>(null);
+    const [isPaused, setIsPaused] = React.useState<boolean>(false);
+    const [mode, setMode] = React.useState<TimerMode>("work");
 
-  const [nextMode, setNextMode] = React.useState<TimerMode | null>(null);
-  const [nextDuration, setNextDuration] = React.useState<number | null>(null);
+    const startNewTimer = (minutes: number, newMode: TimerMode) => {
+        const totalSeconds = minutes * 60;
+        setTotalTime(totalSeconds);
+        setMode(newMode);
+        setState({
+            time: totalSeconds,
+            minutes: Math.floor(totalSeconds / 60),
+            seconds: totalSeconds % 60,
+        });
+        setIsPaused(false);
+        onProgress(0);
+    };
 
-  const startNewTimer = (minutes: number, newMode: TimerMode) => {
-    const totalSeconds = minutes * 60;
-    setTotalTime(totalSeconds);
-    setMode(newMode);
-    setState({
-      time: totalSeconds,
-      minutes: Math.floor(totalSeconds / 60),
-      seconds: totalSeconds % 60,
-    });
-    setIsPaused(false);
-    onProgress(0);
-  };
+    React.useEffect(() => {
+        if (!state || state.time === 0 || isPaused) return;
 
-  React.useEffect(() => {
-    if (nextMode && nextDuration != null) {
-      startNewTimer(nextDuration, nextMode);
-      setNextMode(null);
-      setNextDuration(null);
-    }
-  }, [nextMode, nextDuration]);
+        const timerId = setTimeout(() => {
+            setState((prevState) => {
+                if (!prevState) return null;
 
-  React.useEffect(() => {
-    if (!state || state.time === 0 || isPaused) return;
+                const newTime = prevState.time - 1;
 
-    const timerId = setTimeout(() => {
-      setState((prevState) => {
-        if (!prevState) return null;
+                if (newTime <= 0) {
+                    if (mode === "work") {
+                        if (shortBreakMinutes) {
+                            startNewTimer(shortBreakMinutes, "break");
+                        } else {
+                            stopTimer();
+                        }
+                    } else {
+                        stopTimer();
+                    }
+                    return null;
+                }
 
-        const newTime = prevState.time - 1;
+                const newPercentage = ((totalTime - newTime) / totalTime) * 100;
+                onProgress(newPercentage);
 
-        if (newTime <= 0) {
-          onSessionComplete({
-            type: mode,
-            durationMinutes:
-              mode === "work"
-                ? initialMinutes ?? 0
-                : shortBreakMinutes ?? 0,
-            finishedAt: new Date(),
-          });
+                return {
+                    time: newTime,
+                    minutes: Math.floor(newTime / 60),
+                    seconds: newTime % 60,
+                };
+            });
+        }, 1000);
 
-          if (mode === "work" && shortBreakMinutes) {
-            setNextMode("break");
-            setNextDuration(shortBreakMinutes);
-          } else {
-            stopTimer();
-          }
-          return null;
+        return () => clearTimeout(timerId);
+    }, [state, isPaused, mode, totalTime, onProgress, shortBreakMinutes]);
+
+    const startTimer = () => {
+        if (initialMinutes == null || initialMinutes <= 0) {
+            alert("Please select a work duration first.");
+            return;
         }
+        startNewTimer(initialMinutes, "work");
+    };
 
-        const newPercentage = ((totalTime - newTime) / totalTime) * 100;
-        onProgress(newPercentage);
+    const pauseTimer = () => {
+        setIsPaused((prev) => !prev);
+    };
 
-        return {
-          time: newTime,
-          minutes: Math.floor(newTime / 60),
-          seconds: newTime % 60,
-        };
-      });
-    }, 1000);
+    const stopTimer = () => {
+        setState(null);
+        setIsPaused(false);
+        onProgress(0);
+        setMode("work");
+    };
 
-    return () => clearTimeout(timerId);
-  }, [
-    state,
-    isPaused,
-    mode,
-    totalTime,
-    onProgress,
-    initialMinutes,
-    shortBreakMinutes,
-  ]);
-
-  const startTimer = () => {
-    if (initialMinutes == null || initialMinutes <= 0) {
-      alert("Please select a work duration first.");
-      return;
-    }
-    startNewTimer(initialMinutes, "work");
-  };
-
-  const pauseTimer = () => {
-    setIsPaused((prev) => !prev);
-  };
-
-  const stopTimer = () => {
-    setState(null);
-    setIsPaused(false);
-    onProgress(0);
-    setMode("work");
-  };
-
-  return (
-    <div className="flex flex-col items-center mt-10">
-      {!state && initialMinutes == null && (
+    return (
+        <div className="flex flex-col items-center mt-10">
+            {!state && initialMinutes == null && (
                 <h2 className="text-[#1F2A38] font-bold text-5xl text-center mt-[350px]">
                     {`00:00`}
                 </h2>
             )}
 
-      {!state && initialMinutes != null && (
+            {!state && initialMinutes != null && (
                 <h2 className="text-[#1F2A38] font-bold text-5xl text-center mt-[350px]">
                     {`${initialMinutes}:00`}
                 </h2>
@@ -153,13 +124,13 @@ const Timer = ({
                 </>
             )}
 
-      <div className="flex gap-4 mb-4 mt-[130px]">
-        <StartButton onStart={startTimer} />
-        <PauseButton pauseTimer={pauseTimer} />
-        <StopButton stopTimer={stopTimer} />
-      </div>
-    </div>
-  );
+            <div className="flex gap-4 mb-4 mt-[130px]">
+                <StartButton onStart={startTimer} />
+                <PauseButton pauseTimer={pauseTimer} />
+                <StopButton stopTimer={stopTimer} />
+            </div>
+        </div>
+    );
 };
 
 export default Timer;
